@@ -34,7 +34,8 @@ module Jqgrid
           :view                => 'false',          
           :inline_edit         => 'false',
           :autowidth           => 'false',
-          :rownumbers          => 'false'                   
+          :rownumbers          => 'false',
+          :sortable_rows       => 'false'                     
         }.merge(options)
       
       # Stringify options values
@@ -78,7 +79,20 @@ module Jqgrid
       end
      
       # Enable sortableRows
-      sortableRows=""
+      sortable_rows=""
+      if options[:sortable_rows] == 'true'
+        sortable_rows=%Q/.sortableRows({update: function() { 
+          var serial=jQuery("##{id}").jqGrid('getDataIDs');
+          $.ajax({
+                  url: "#{options[:edit_url]}",
+                  type: 'post',
+                  data: {ids:serial,oper:"sort"},
+                  complete: function(request){
+                    $(".jqgrow").effect("highlight")
+                    }
+                 });
+        }})/
+      end
       
       
       # Enable multi-selection (checkboxes)
@@ -299,6 +313,7 @@ module Jqgrid
               {afterSubmit:function(r,data){return #{options[:error_handler_return_value]}(r,data,'add');}},
               {closeAfterEdit:true,afterSubmit:function(r,data){return #{options[:error_handler_return_value]}(r,data,'delete');}}
             )
+            #{sortable_rows}
             #{search}
             #{multihandler}
             #{selection_link}
