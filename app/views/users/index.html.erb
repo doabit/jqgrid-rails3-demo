@@ -3,11 +3,11 @@
    
   { :field => "id", :label => "id" }, 
    
-  { :field => "name", :label => "name" }, 
+  { :field => "name", :label => "name" ,:editable => true}, 
    
-  { :field => "email", :label => "email" }, 
+  { :field => "email", :label => "email",:editable => true }, 
    
   { :field => "position", :label => "position" } 
    
-  ] , {:autowidth=>true} 
+  ] , {:autowidth=>true,:add => true,:edit => true,:delete => true,:view => true,:edit_url => post_data_users_url} 
   ) %>
